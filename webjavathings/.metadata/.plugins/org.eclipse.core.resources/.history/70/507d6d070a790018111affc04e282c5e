@@ -1,0 +1,17 @@
+package com.app.calc;
+
+import org.junit.Before;
+
+public class CalcTest {
+
+	Calculator calculator ;
+	
+	@Before
+	public void setUp()
+	{
+		calculator = new Calculator();
+		
+	}
+	
+	
+}

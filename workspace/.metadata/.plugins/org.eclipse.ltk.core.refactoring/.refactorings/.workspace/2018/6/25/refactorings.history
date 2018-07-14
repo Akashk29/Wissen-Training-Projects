@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete 17 resources" deleteContents="false" description="Delete 17 resources" element1="/01-OO-in-java-patterns" element10="/19-java-with-sql-databases" element11="/2-OO-types-in-java" element12="/3-OO-in-java-abs-encap" element13="/4-OO-in-java-inheritance-I" element14="/5-OO-in-java-Inheritance-II" element15="/6-OO-in-java-Inheritance-III" element16="/7-OO-in-java-AC-vs-Interface" element17="/8-OO-in-java-shopIT" element2="/10-Inner-Types" element3="/11-ExceptionHandling" element4="/12-Java-generics" element5="/14-java-concurrency-I" element6="/15-java-concurrency-II" element7="/16-java-concurrency-III" element8="/17-java-concurrent-collections" element9="/18-java-IO" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="17" stamp="1529494609303"/>
+</session>

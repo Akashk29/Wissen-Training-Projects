@@ -1,0 +1,9 @@
+INDEX VERSION 1.130
+D:\webjavathings2\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2264420855.index
+\bank-mts-v8 - web\src\main\java
+D:\webjavathings2\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1982694540.index
+\spring-mvc-learnOWN\src\main\java
+D:\webjavathings2\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2845487464.index
+\spring-mvc-learn\src\main\java
+D:\webjavathings2\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1662937526.index
+\bank-mts-v8 - web2\src\main\java

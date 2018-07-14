@@ -1,0 +1,23 @@
+package com.bank.mts.repository;
+
+import java.util.Date;
+
+import com.bank.mts.model.Transaction;
+
+public class JpaTransactionRepository implements TransactionRepository{
+
+	@Override
+	public void enter(Transaction transaction) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Transaction retrieve(String accountNum, Date fromDate, Date toDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+	
+}

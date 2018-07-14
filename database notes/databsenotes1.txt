@@ -1,0 +1,225 @@
+Clustered tables
+real app clusters
+
+database should have just one instance mapped in the memory
+single database single instance -> normal db
+single db multi instance -> RAC
+-----------------------------------------------------------
+user tables -> tables created by the users
+-----------------------------------------------------------
+data dictionary -> meta data tables created by dbms(when the database is created), maintained by sys and system users,
+which are the super users of the db.
+
+v$ -> dynamic performance table/view
+   -> values change when we access
+   -> can be accessed only by sys and system
+
+user_tables, user_objects, user_catalog -> tables which can be accessed by normal users as well 
+
+select * from tab -> get all tables 
+-------------------------------------------------------------------------------------------------------------
+Number(x) datatype -> if we don't specify x, the db will allocate a large amount of space to the variable.
+-------------------------------------------------------------------------------------------------------------
+when copying a table into another one, properties of primary keys of the former will NOT be copied to the latter.
+eg. create table xyz as select * from employees; -> the property NOT_NULL of 
+                                                    emp_id(primary key) will not be copied to xyz.
+
+also, 
+if we do : create table abc as select * from employees where 2=4(some false statement),
+           only the structure of the "employees" table is copied, no records will be present in the abc table.
+---------------------------------------------------------------------------------------------------------------
+                                                       DDL ->  
+---------------------------------------------------------------------------------------------------------------
+when ALTERING the table, if we want to add more than one column, the ADD statements should be 
+inside paranthesis. 
+eg: alter table wissen add (designation1 varchar2(20), desig2 varchar2(20));
+
+For MODIFYING columns (the size allocated to variables) ->
+alter table wissen modify designation varchar2(5); (here, assume the designation field earlier was varchar2(20))
+
+For DROPPING columns ->
+alter table wissen drop column designation; 
+or 
+alter table wissen drop (designation);
+
+use SET UNUSED command to mark the column as an unused one.
+ex : alter table wissen set unused (desig2);
+     After setting this, the column desig2 won't be seen when the desc table command will be executed, but
+     it will still be present in the db.
+     Later, the unued columns could be dropped by using :
+     alter table wissen drop unused columns;
+
+For getting the list of UNUSED columns , ->  select * from user_unused_col_tabs;
+
+------------------------------------------------------------------------------------------------------------------
+
+DROPPING a table : 
+drop table wissen; (only incomplete recovery posssible.)
+
+In the 10g version, a recycle bin concept was introduced, 
+so that the dropped tables could be restored.
+
+To access recycle bin :
+select object_name, original_name, operation,droptime, dropscn from recyclebin;
+
+To restore :
+flashback table wissen to before drop;
+
+To drop a table without it going in the recycle bin (to delete permanently) :
+drop table wissen purge;  
+------------------------------------------------------------------------------------------------------------------
+RENAMING a table :
+rename xyz to abc; (condition -> you must be the owner of the table)
+------------------------------------------------------------------------------------------------------------------
+TRUNCATING a table:
+removes all rows from a table, releases the storage sapce taken by data, but keeps the table and its structure safe.
+query : 
+truncate table xyz;
+
+---------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
+                                                       DML -> 
+---------------------------------------------------------------------------------------------------------------
+
+INSERTING
+All values :
+insert into wissen values (10001,'AAAA','30-jun-2018','Mumbai',25000 );
+
+Some values :
+insert into wissen(id,location) values (10002,'Bangalore');
+
+*/ DML commands are non-auto commit, which means we will lose the data if connection is closed. To prevent this, 
+  use command -> "commit;" /*
+
+
+UPDATE 
+update employees
+set department_id = 23
+where employee_id = 1;
+
+DELETE
+delete from departments
+where department_name = 'Finance';
+
+ */ Delete command does not free up the storage space allocated to the row. /*
+
+MERGE
+Update a row if it already exists, else create a new one.
+
+SAVEPOINT
+Savepoints act as markers for faster rollback in case of wrong data.
+You can have multiple savepoints, representing different points you can rollback to.
+------------------------------------------------------------------------------------------------------------------
+
+3 types of files:
+1. data file
+2. control file -> ensures proper functioning of db -> scn and cacn are stored here.
+3. log files 
+
+---------------------------------------------------------------------------------------------------------------------
+LOCKS
+
+*/ To release locks and allow the other user to continue executing their commands, you have to call the commit command /*
+
+Implicit locking:
+doesnt allow multiple users to update the same row.
+Implicit locking is at row level.
+
+Explicit locking:
+Explicit locking is at table level.
+
+query :
+lock table xyz in [share/exclusive] mode; 
+
+-Share locking allows multiple users to lock table in their console.
+-Exclusive locking allows only one user to lock. 
+
+---------------------------------------------------------------------------------------------------------------------------------
+USER ACCOUNT CREATION AND LOCKING : 
+
+*/ all create user and granting (all commands below)
+ commands must be given by sys user/*
+
+to create a new user : create user wissen(username) identified by wissen(password);
+
+grant create session permission : grant create session to wissen;
+
+grant create table permission : grant create table to wissen;
+
+to lock/unlock this user, so that no other cmd instance can connect to this 
+user : alter user wissen account [lock/unlock];
+
+to grant memory space so that records can be inserted : 
+alter user wissen quota 2m on users;
+
+to view various blocks : show parameter db_block;
+- the blocks here are of Standard Block Size, which has been defined by oracle.
+- non-standard block sizes were introduced in the later versions, where users
+  can define block sizes. But for that, special permissions must be allocated
+  to the user.
+
+*/ the "dual" dummy table is available for calculations 
+ex: select 8192/512 from dual; /*
+
+*/ 512kb is windows standard block size, 
+   for linux it is 1024kb /* 
+
+-values can be inserted into a table until it reaches the alloted quota.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+ROLES 
+
+A role is a collection of previleges(permissions).It becomes easier to allocate 
+numerous previleges to a user, by directly granting them a role instead. 
+
+create role A;
+----------------------------------------------------------------------------------------------------------------------------------------------------
+GRANTING PERMISSIONS TO OTHER USERS
+
+Granting a user to view/select/update etc another user's tables :
+
+query : (this granting command can only be executed by the OWNER of the table.)
+grant object_previlege on table_name to user_name;
+
+ex : grant select on wissen to scott;
+ 
+grant all on table_name to user_name
+granting all permissions to a user.
+
+grant update(dept_id , username) on department to scott;
+here, scott can only update those two fields now.
+
+grant select, insert on departments
+to scott
+with grant option;
+here, the "with grant option" enables scott to pass on previleges on the 
+departments table to other users.
+
+grant select on wissen.departments tp PUBLIC ;
+-The public allows all users on the system to get the permission.
+-The wissen.[table_name] has to be used as this command is 
+ being executed by another user(let's say scott, sa scott has permission
+ to pass on previleges.)
+
+to REVOKE permission : 
+revoke all on wissen from scott;
+--------------------------------------------------------------------------------------------------------------------------------
+
+ 
+ADDING CONSTRAINTS 
+
+alter table table_name add constraint constraint_name [condition]
+ex:alter table wissen  add constraint wissen_pk primary key(ID);
+
+ex2: alter table table_name add constraint constraint_name Foreign key
+(column_name) references table2_name (column_name2);
+
+    
+getting all constraints :
+select constraint_name from user_constraints where table_name = 'WISSEN';
+(the constraint_name and user_constraints are predefined column and table 
+resp. 'WISSEN' is the name of the table, and it is case sensitive.)
+
+
+

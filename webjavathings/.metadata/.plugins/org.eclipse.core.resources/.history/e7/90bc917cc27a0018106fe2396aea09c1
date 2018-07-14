@@ -1,0 +1,31 @@
+package com.bank.mts.repository;
+
+import java.util.Date;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import com.bank.mts.model.Transaction;
+
+public class JpaTransactionRepository implements TransactionRepository{
+
+	
+	@PersistenceContext
+	private EntityManager em;
+	
+	
+	@Override
+	public void enter(Transaction transaction) {
+		em.merge(transaction);
+		
+	}
+
+	@Override
+	public void retrieve(String accountNum, Date fromDate, Date toDate) {
+		
+		return null;
+	}
+
+	
+	
+}

@@ -1,0 +1,48 @@
+package com.bank.mts.service;
+
+import org.apache.log4j.Logger;
+
+import com.bank.mts.model.Account;
+import com.bank.mts.repository.AccountRepository;
+
+public class TxrserviceImpl implements TxrService {
+
+    private AccountRepository accountRepository;
+    
+    private static Logger logger = Logger.getLogger("mts");
+    
+    public TxrserviceImpl() {
+    	
+    	logger.info("Txr service instance created..");
+    }
+    
+    public void setAccountRepository(AccountRepository accountRepository) {
+    	
+    	this.accountRepository = accountRepository;
+    	logger.info("AccountRepository instance injected to TxrService instance");
+    }
+	
+
+	public void txr(double amount, String fromAccNum, String toAccNum) {
+	
+		logger.info("txr initiated.");
+		
+		try {
+		//load accounts
+		Account fromAcc = accountRepository.load(fromAccNum);
+		Account toAcc = accountRepository.load(toAccNum);
+		
+		//debit and credit accounts
+		//....................
+		
+		//update accounts
+		accountRepository.update(fromAccNum);
+		accountRepository.update(toAccNum);
+		
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.info("txr failed due to error.")
+		}
+	}
+
+}

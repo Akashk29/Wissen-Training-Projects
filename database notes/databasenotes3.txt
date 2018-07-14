@@ -1,0 +1,155 @@
+SQL> declare
+  2  v_sal NUMBER(9,2) := &p_annual_sal;
+  3  Begin
+  4  v_sal := v_sal/12;
+  5  DBMS_OUTPUT.PUT_LINE ('The monthly salary is' || TO_CHAR(v_sal));
+  6  END;
+  7  /
+Enter value for p_annual_sal: 800000
+old   2: v_sal NUMBER(9,2) := &p_annual_sal;
+new   2: v_sal NUMBER(9,2) := 800000;
+
+PL/SQL procedure successfully completed.
+
+SQL> set serveroutput on
+SQL> define p_annual_sal = 60000
+SQL> declare
+  2  v_sal NUMBER(9,2) := &p_annual_sal;
+  3  Begin
+  4  v_sal := v_sal/12;
+  5  DBMS_OUTPUT.PUT_LINE ('The monthly salary is' || TO_CHAR(v_sal));
+  6  END;
+  7  /
+old   2: v_sal NUMBER(9,2) := &p_annual_sal;
+new   2: v_sal NUMBER(9,2) := 60000;
+The monthly salary is5000
+
+PL/SQL procedure successfully completed.
+
+SQL> /
+old   2: v_sal NUMBER(9,2) := &p_annual_sal;
+new   2: v_sal NUMBER(9,2) := 60000;
+The monthly salary is5000
+
+PL/SQL procedure successfully completed.
+
+SQL> ed
+SP2-0110: Cannot create save file "afiedt.buf"
+SQL> undefine p_annual_sal
+SQL> /
+Enter value for p_annual_sal: 463373
+old   2: v_sal NUMBER(9,2) := &p_annual_sal;
+new   2: v_sal NUMBER(9,2) := 463373;
+The monthly salary is38614.42
+
+PL/SQL procedure successfully completed.
+
+SQL> variable g_salary NUMBER
+SQL> begin
+  2  select salary into :g_salary from employees where employee_id = 178;
+  3  end;
+  4  /
+
+PL/SQL procedure successfully completed.
+
+SQL> print g_salary
+
+  G_SALARY
+----------
+      7000
+
+SQL>
+SQL> declare exp exception;
+  2  v_name varchar2(23);
+  3  begin
+  4  select last_name into v_name
+  5  from employees
+  6  where department_id = 90;
+  7  exception
+  8  when too_many_rows then
+  9  dbms_output.put_line('no data');
+ 10  end;
+ 11  /
+no data
+
+PL/SQL procedure successfully completed.
+
+SQL> declare
+  2  exp exception;
+  3  pragma exception_init(exp,-02292);
+  4  v_name varchar2(23);
+  5  begin
+  6  delete from employees
+  7  where department_id = 90;
+  8  exception
+  9  when exp then
+ 10  dbms_output.put_line('some problem');
+ 11  end;
+ 12  /
+some problem
+
+PL/SQL procedure successfully completed.
+
+SQL> select last_name from employees where department_id = 90;
+
+LAST_NAME
+-------------------------
+King
+Kochhar
+De Haan
+
+SQL> delete from employees where department_id = 90;
+delete from employees where department_id = 90
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (HR.DEPT_MGR_FK) violated - child record found
+
+
+
+SQL> begin
+  2  update employees
+  3  set salary = 9000 where employee_id = 1000;
+  4  if sql%notfound then
+  5  raise_application_error(-20999, 'No such employee id');
+  6  end if;
+  7  end;
+  8  /
+begin
+*
+ERROR at line 1:
+ORA-20999: No such employee id
+ORA-06512: at line 5
+
+
+
+SQL> create or replace function tax(p_value in number)
+  2  return number is
+  3  begin return (p_value*0.08);
+  4  end tax;
+  5  /
+
+Function created.
+
+SQL> select employee_id,salary,tax(salary)
+  2  from employees
+  3  where department_id = 100;
+
+EMPLOYEE_ID     SALARY TAX(SALARY)
+----------- ---------- -----------
+        108      12008      960.64
+        109       9000         720
+        110       8200         656
+        111       7700         616
+        112       7800         624
+        113       6900         552
+
+6 rows selected.
+
+SQL>   show errors;
+No errors.
+SQL> describe tax;
+FUNCTION tax RETURNS NUMBER
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ P_VALUE                        NUMBER                  IN
+

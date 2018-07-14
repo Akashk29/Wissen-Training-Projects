@@ -1,0 +1,10 @@
+package com.bank.mts.service;
+
+import com.bank.mts.repository.*;
+
+public interface TxrService {
+
+	public void set(AccountRepository accountRepository);
+	void txr(double amount, String fromAccNum, String toAccNum);
+     	
+}

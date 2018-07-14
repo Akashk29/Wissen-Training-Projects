@@ -1,0 +1,38 @@
+package com.bank.mts.repository;
+
+import java.util.Date;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import com.bank.mts.model.Transaction;
+
+public class JpaTransactionRepository implements TransactionRepository{
+
+	
+	@PersistenceContext
+	private EntityManager em;
+	
+	
+	@Override
+	public void enter(Transaction transaction) {
+		em.merge(transaction);
+		
+	}
+
+	@Override
+	public void retrieve(String accountID, Date fromDate, Date toDate) {
+		
+		String hql = "FROM transaction T where t.accountNum = :accountID and "
+				+ "t.date BETWEEN :fromDate AND :toDate";
+		Query query = em.createQuery(hql);
+		
+		
+		
+
+	}
+
+	
+	
+}

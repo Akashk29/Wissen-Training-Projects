@@ -1,0 +1,16 @@
+package com.app.calc;
+
+import org.junit.Before;
+
+public class CalcTest {
+
+	Calculator calculator ;
+	
+	@Before
+	{
+		calculator = new Calculator();
+		
+	}
+	
+	
+}

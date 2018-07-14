@@ -1,0 +1,23 @@
+package com.bank.mts;
+
+import org.springframework.context.ConfigurableApplicationContext;
+
+public class App {
+
+	public static void main(String[] args) {
+		
+		// Init phase
+				// -----------------------------------------
+
+				// AccountRepository accountRepository = new JdbcAccountRepository();
+				// TxrService txrService = new TxrServiceImpl();
+				// txrService.setAccountRepository(accountRepository);
+		
+		ConfigurableApplicationContext context = null;
+		
+		
+		
+
+	}
+
+}

@@ -1,0 +1,11 @@
+{
+  "name": "wissen_greet",
+  "version": "1.0.0",
+  "description": "hubaba",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

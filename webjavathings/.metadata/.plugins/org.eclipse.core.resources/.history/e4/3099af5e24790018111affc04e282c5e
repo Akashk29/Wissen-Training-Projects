@@ -1,0 +1,25 @@
+package com.bank.mts.service;
+
+import com.bank.mts.repository.AccountRepository;
+
+public class TxrserviceImpl implements TxrService {
+
+    private AccountRepository accountRepository;
+    
+    public void setAccountRepository(AccountRepository accountRepository) {
+    	
+    	this.accountRepository = accountRepository;
+    	
+    }
+	
+	public void set(AccountRepository accountRepository) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void txr(double amount, String fromAccNum, String toAccNum) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

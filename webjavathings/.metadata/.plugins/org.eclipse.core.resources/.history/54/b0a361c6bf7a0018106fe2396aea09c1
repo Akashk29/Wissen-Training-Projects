@@ -1,0 +1,21 @@
+package com.bank.mts.repository;
+
+import com.bank.mts.model.Transaction;
+
+public class JpaTransactionRepository implements TransactionRepository{
+
+	@Override
+	public Transaction retrieve(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void enter(Transaction transaction) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	
+}
